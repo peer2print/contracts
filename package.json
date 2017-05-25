@@ -1,0 +1,23 @@
+{
+  "name": "contracts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peer2print/contracts.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/peer2print/contracts/issues"
+  },
+  "homepage": "https://github.com/peer2print/contracts#readme",
+  "dependencies": {
+    "ethereumjs-testrpc": "^3.0.5",
+    "truffle": "^3.2.4"
+  }
+}
