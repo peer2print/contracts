@@ -1,5 +1,7 @@
 pragma solidity ^0.4.4;
 
+import "./ProductionRegistry.sol";
+
 contract Production {
 	State public state;
 	address public buyer;
