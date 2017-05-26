@@ -39,7 +39,6 @@ contract TestProduction {
 
     //prime the proxy.
     Production(address(throwProxy)).sendCollateral();
-    //productionInstance.transfer(1);
 
     //execute the call that is supposed to throw.
     //r will be false if it threw. r will be true if it didn't.
