@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./truffle_test.sh"
+    "test": "./truffle_test.sh",
+	"migrate": "truffle migrate --network development"
   },
   "repository": {
     "type": "git",
