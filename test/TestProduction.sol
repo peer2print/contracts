@@ -38,14 +38,14 @@ contract TestProduction {
     ThrowProxy throwProxy = new ThrowProxy(address(productionInstance));
 
     //prime the proxy.
-    Production(address(throwProxy)).transfer(1);
+    Production(address(throwProxy)).sendCollateral();
     //productionInstance.transfer(1);
 
     //execute the call that is supposed to throw.
     //r will be false if it threw. r will be true if it didn't.
     //make sure you send enough gas for your contract method.
-    //bool r = throwProxy.execute.gas(200000)();
+    bool r = throwProxy.execute.gas(200000)();
 
-    //Assert.isFalse(r, "test");
+    Assert.isFalse(r, "sendCollateral should throw when buyer is not origin");
   }
 }
