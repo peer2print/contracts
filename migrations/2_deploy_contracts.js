@@ -1,5 +1,5 @@
 var Production = artifacts.require("./Production.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(Production);
+  deployer.deploy(Production, "test", 3);
 };
