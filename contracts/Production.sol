@@ -40,7 +40,7 @@ contract Production {
 
 	function sendCollateral() payable {
 		if (msg.value != uint(price / 2)) {
-			return; // throw;
+			throw ; // throw;
 		} else {
 			state = State.CollateralPaid;
 		}
