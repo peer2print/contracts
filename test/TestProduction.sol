@@ -3,6 +3,7 @@ pragma solidity ^0.4.2;
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
 import "../contracts/Production.sol";
+import "./ThrowProxy.sol";
 
 contract TestProduction {
 
@@ -30,17 +31,21 @@ contract TestProduction {
     Assert.isTrue(production.state() == Production.State.RequestSent, "State must be RequestSent");
     Assert.isTrue(production.seller() == address(0), "seller's address must be null");
   }
-/*
+
   function testSendCollateralThrowSetWhenBuyerIsNotOrigin() {
-    // Given
-    Production production = Production(DeployedAddresses.Production());
+    Production productionInstance = new Production("test", 3);
+    //set Production as the contract to forward requests to. The target.
+    ThrowProxy throwProxy = new ThrowProxy(address(productionInstance));
 
-    // When
-    production.sendCollateral().transfer(;
+    //prime the proxy.
+    Production(address(throwProxy)).transfer(1);
+    //productionInstance.transfer(1);
 
-    // then
-    Assert.isTrue(production.state() == Production.State.RequestSent, "State must be RequestSent");
-    Assert.isTrue(production.seller() == address(0), "seller's address must be null");
+    //execute the call that is supposed to throw.
+    //r will be false if it threw. r will be true if it didn't.
+    //make sure you send enough gas for your contract method.
+    //bool r = throwProxy.execute.gas(200000)();
+
+    //Assert.isFalse(r, "test");
   }
-  */
 }

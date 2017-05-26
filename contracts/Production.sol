@@ -16,6 +16,14 @@ contract Production {
 		SellerPaid
 	}
 
+	function () payable {
+		if (msg.value != uint(price) && state == State.RequestApproved) {
+			throw;
+		} else {
+			state = State.CollateralPaid;
+		}
+	}
+
 	function Production(bytes32 _description, uint _price) {
 		buyer = tx.origin;
 		description = _description;
@@ -28,9 +36,9 @@ contract Production {
 		state = State.RequestApproved;
 	}
 
-	function sendCollateral() onlyBuyer payable {
+	function sendCollateral() payable {
 		if (msg.value != uint(price / 2)) {
-			throw;
+			return; // throw;
 		} else {
 			state = State.CollateralPaid;
 		}
