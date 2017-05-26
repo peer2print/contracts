@@ -3,7 +3,7 @@
 Usage:
 ```
 npm install
-./truffle_test.sh
+npm test
 ```
 If you want to manage testrpc and truffle yourself:
 ```
