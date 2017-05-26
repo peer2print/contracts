@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./truffle_test.sh",
+	"truffle": "truffle",
+	"start-testrpc": "./scripts/start-testrpc.sh",
+	"stop-testrpc": "./scripts/stop-testrpc.sh",
+    "test": "./scripts/truffle_test.sh",
 	"migrate": "truffle migrate --network development"
   },
   "repository": {
