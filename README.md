@@ -1,5 +1,7 @@
 # contracts
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/89239ee19ea345aa8c739a7c4f35e17e)](https://www.codacy.com/app/n0izn0iz/contracts?utm_source=github.com&utm_medium=referral&utm_content=peer2print/contracts&utm_campaign=badger)
+
 Usage:
 ```
 npm install
