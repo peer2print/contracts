@@ -1,5 +1,5 @@
 #!/bin/sh
 echo "Stopping testrpc"
-kill `cat testrpc.pid` &&
+kill $(cat testrpc.pid) &&
 rm testrpc.pid &&
 echo "SUCCESS"
