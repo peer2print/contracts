@@ -6,10 +6,11 @@ import "../contracts/Production.sol";
 import "./ThrowProxy.sol";
 
 contract TestProduction {
+  event Debug(uint debug);
 
   function testInitialVariablesAreSet() {
     // Given
-    Production production = Production(DeployedAddresses.Production());
+    Production production = new Production("test", 3);
 
     // Then
     Assert.isTrue(production.state() == Production.State.RequestSent, "Initial state must be RequestSent");
@@ -22,7 +23,7 @@ contract TestProduction {
 
   function testApprovedRequestVariableAreNotSetWhenBuyerIsOrigin() {
     // Given
-    Production production = Production(DeployedAddresses.Production());
+    Production production = new Production("test", 3);
 
     // When
     production.approveRequest();
@@ -33,18 +34,19 @@ contract TestProduction {
   }
 
   function testSendCollateralThrowSetWhenBuyerIsNotOrigin() {
-    Production productionInstance = new Production("test", 3);
+    // Given
+    Production production = new Production("test", 3);
     //set Production as the contract to forward requests to. The target.
-    ThrowProxy throwProxy = new ThrowProxy(address(productionInstance));
+    ThrowProxy throwProxy = new ThrowProxy(address(production));
 
-    //prime the proxy.
+    Debug(this.balance);
+    // When
+    // TODO: send() will fail because there is no ether on this address
     Production(address(throwProxy)).sendCollateral();
-
     //execute the call that is supposed to throw.
-    //r will be false if it threw. r will be true if it didn't.
-    //make sure you send enough gas for your contract method.
-    bool r = throwProxy.execute.gas(200000)();
+    bool hasThrown = !throwProxy.execute.gas(200000)();
 
-    Assert.isFalse(r, "sendCollateral should throw when buyer is not origin");
+    // Then
+    Assert.isTrue(hasThrown, "sendCollateral should throw when buyer is not origin");
   }
 }
