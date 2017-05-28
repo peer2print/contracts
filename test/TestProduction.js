@@ -11,7 +11,7 @@ contract('Production', function(accounts) {
         })
     })
 
-    function catchSolidityThrow() {
+    function catchSolidityThrow(error) {
       if(error.toString().indexOf("invalid opcode") !== -1) {
         assert(false, "We were expecting a Solidity throw (aka an invalid opcode)")
       }
@@ -32,7 +32,7 @@ contract('Production', function(accounts) {
 
   it("should throw when bad amount of collateral is paid by the buyer", function() {
     return productionInstance.sendCollateral({value: 2}).catch((error) => {
-      return catchSolidityThrow()
+      return catchSolidityThrow(error)
     })
   });
 
@@ -40,13 +40,13 @@ contract('Production', function(accounts) {
     let otherAddress = accounts[1]
 
     return productionInstance.sendCollateral({value: 2, account: otherAddress}).catch((error) => {
-      return catchSolidityThrow()
+      return catchSolidityThrow(error)
     })
   });
 
   it("should throw sending collateral when the contract's state is not in RequestApproved", function() {
     return productionInstance.sendCollateral({value: price}).catch((error) => {
-      return catchSolidityThrow()
+      return catchSolidityThrow(error)
     })
   });
 
