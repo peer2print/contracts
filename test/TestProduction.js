@@ -63,7 +63,73 @@ contract('Production', function(accounts) {
     }
 
     function verify(state) {
-      return assert.equal(state, 2, "state must be in RequestApproved")
+      return assert.equal(state.valueOf(), 2, "state must be in RequestApproved")
+    }
+
+    return setup().then(exercice).then(verify)
+  });
+
+  it("should not change contract's state ProductFinished's transaction origin is not seller", function() {   
+    let sellerAddress = accounts[1]
+
+    function setup() {
+      return productionInstance.approveRequest({from: sellerAddress})
+      .then(() => {
+        return productionInstance.sendCollateral({value: 3})
+      })
+    }
+    
+    function exercice() {
+      return productionInstance.productFinished().then(() => {
+        return productionInstance.state.call()
+      })
+    }
+
+    function verify(state) {
+      return assert.equal(state.valueOf(), 2, "state must be in RequestApproved")
+    }
+
+    return setup().then(exercice).then(verify)
+  });
+
+  it("should not change contract's state ProductFinished's when state is not in CollateralPaid", function() {   
+    let sellerAddress = accounts[1]
+
+    function setup() {
+      return productionInstance.approveRequest({from: sellerAddress})
+    }
+    
+    function exercice() {
+      return productionInstance.productFinished({from: sellerAddress}).then(() => {
+        return productionInstance.state.call()
+      })
+    }
+
+    function verify(state) {
+      return assert.equal(state.valueOf(), 1, "state must be in RequestApproved")
+    }
+
+    return setup().then(exercice).then(verify)
+  });
+
+  it("should set contract's state in ProductFinished's when transaction origin is seller", function() {   
+    let sellerAddress = accounts[1]
+
+    function setup() {
+      return productionInstance.approveRequest({from: sellerAddress})
+      .then(() => {
+        return productionInstance.sendCollateral({value: 3})
+      })
+    }
+    
+    function exercice() {
+      return productionInstance.productFinished({from: sellerAddress}).then(() => {
+        return productionInstance.state.call()
+      })
+    }
+
+    function verify(state) {
+      return assert.equal(state.valueOf(), 3, "state must be in ProductFinished")
     }
 
     return setup().then(exercice).then(verify)

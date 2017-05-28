@@ -19,6 +19,7 @@ contract Production {
 	}
 
 	function () {
+		// Fallback function does not accept ether
 	}
 
 	function Production(bytes32 _description, uint _price) {
@@ -41,6 +42,10 @@ contract Production {
 		}
 	}
 
+	function productFinished() onlySeller collateralPaid {
+		state = State.ProductFinished;
+	}
+
 	modifier notBuyer {
 		if (tx.origin != buyer) {
 			_;
@@ -55,6 +60,12 @@ contract Production {
 		}
 	}
 
+	modifier onlySeller {
+		if (tx.origin == seller) {
+			_;
+		}
+	}
+
 	modifier requestApproved {
 		if (state == State.RequestApproved) {
 			_;
@@ -63,6 +74,9 @@ contract Production {
 		}
 	}
 
-
-
+	modifier collateralPaid {
+		if (state == State.CollateralPaid) {
+			_;
+		}
+	}
 }
