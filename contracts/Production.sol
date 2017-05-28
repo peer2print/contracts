@@ -19,6 +19,7 @@ contract Production {
 	}
 
 	function () {
+		// Fallback function does not accept ether
 	}
 
 	function Production(bytes32 _description, uint _price) {
