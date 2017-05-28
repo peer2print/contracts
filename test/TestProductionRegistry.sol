@@ -19,18 +19,16 @@ contract TestProductionRegistry {
 
     // Given
     ProductionRegistry productionRegistry = ProductionRegistry(DeployedAddresses.ProductionRegistry());
-	Production production = new Production("test", 42);
+	  Production production = new Production("test", 42);
 
-	// When
-	productionRegistry.addProduction(production);
+	  // When
+	  productionRegistry.addProduction(production);
+    Production result = productionRegistry.productions(0);
 
     // Then
     Assert.equal(productionRegistry.getProductionsCount(), 1, "Should have a production after add");
-
-	Production result = productionRegistry.productions(0);
-
-	Assert.equal(result.description(), "test", "Should have the right description");
-	Assert.equal(result.price(), 42, "Should have the right price");
-	Assert.equal(result.buyer(), tx.origin, "Buyers address is not correct");
+	  Assert.equal(result.description(), "test", "Should have the right description");
+	  Assert.equal(result.price(), 42, "Should have the right price");
+	  Assert.equal(result.buyer(), tx.origin, "Buyers address is not correct");
   }
 }
