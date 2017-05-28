@@ -131,9 +131,6 @@ contract('Production', function(accounts) {
   });
 
   it("should throw when productExchanged confirmation origin of transaction is not seller or buyer", function() { 
-    let sellerAddress = accounts[1]
-    let otherAddress = accounts[2]
-
     function setup() {
       return productionInstance.approveRequest({from: sellerAddress})
       .then(() => {
@@ -153,9 +150,6 @@ contract('Production', function(accounts) {
   });
 
   it("should throw when productExchanged confirmation is made while the state is incorrect", function() { 
-    let sellerAddress = accounts[1]
-    let otherAddress = accounts[2]
-
     function setup() {
       return productionInstance.approveRequest({from: sellerAddress})
       .then(() => {
@@ -173,8 +167,6 @@ contract('Production', function(accounts) {
   });
 
   it("should confirm ProductExchanged only by the seller", function() { 
-    let sellerAddress = accounts[1]
-
     function setup() {
       return productionInstance.approveRequest({from: sellerAddress})
       .then(() => {
@@ -199,8 +191,6 @@ contract('Production', function(accounts) {
   });
 
   it("should confirm ProductExchanged only by the buyer", function() { 
-    let sellerAddress = accounts[1]
-
     function setup() {
       return productionInstance.approveRequest({from: sellerAddress})
       .then(() => {
@@ -225,8 +215,6 @@ contract('Production', function(accounts) {
   });
 
   it("should set state on ProductExchanged when both seller and buyer confirm", function() { 
-    let sellerAddress = accounts[1]
-
     function setup() {
       return productionInstance.approveRequest({from: sellerAddress})
       .then(() => {
