@@ -7,7 +7,14 @@ contract Production {
 	address public buyer;
 	bytes32 public description;
 	uint public price;
+	uint public minimumCollateral;
 	address public seller;
+	BilateralConfirmation public exchangeConfirmations;
+
+	struct BilateralConfirmation {
+		bool buyer;
+		bool seller;
+	}
 
 	enum State {
 		RequestSent,
@@ -26,6 +33,7 @@ contract Production {
 		buyer = tx.origin;
 		description = _description;
 		price = _price;
+		minimumCollateral = uint(_price) / uint(3);
 		state = State.RequestSent;
 	}
 
@@ -34,17 +42,37 @@ contract Production {
 		state = State.RequestApproved;
 	}
 
-	function sendCollateral() payable onlyBuyer requestApproved {
-		if (msg.value != uint(price)) {
+	function sendCollateral() payable onlyBuyer whenRequestApprovedState {
+		if (msg.value <= minimumCollateral) {
 			throw;
 		} else {
 			state = State.CollateralPaid;
 		}
 	}
 
-	function productFinished() onlySeller collateralPaid {
+	function productFinished() onlySeller whenCollateralPaidState {
 		state = State.ProductFinished;
 	}
+
+	function productExchanged() payable sellerAndBuyer whenProductFinishedState {
+		if (tx.origin == buyer && (msg.value + this.balance) >= price) {
+			exchangeConfirmations.buyer = true;
+		} else if (tx.origin == seller) {
+			exchangeConfirmations.seller = true;
+		} else {
+			throw;
+		}
+		
+		if (exchangeConfirmations.buyer && exchangeConfirmations.seller) {
+			state = State.ProductExchanged;
+		}
+	}
+
+	// TODO: getReward() payable onlySeller whenProductExchangedState {}
+
+	/***************
+	/*	Modifiers  *
+	****************/	
 
 	modifier notBuyer {
 		if (tx.origin != buyer) {
@@ -62,11 +90,20 @@ contract Production {
 
 	modifier onlySeller {
 		if (tx.origin == seller) {
+			// Throw is not needed here because the function is not payable
 			_;
 		}
 	}
 
-	modifier requestApproved {
+	modifier sellerAndBuyer {
+		if (tx.origin == seller || tx.origin == buyer) {
+			_;
+		} else {
+			throw;
+		}
+	}
+
+	modifier whenRequestApprovedState {
 		if (state == State.RequestApproved) {
 			_;
 		} else {
@@ -74,9 +111,18 @@ contract Production {
 		}
 	}
 
-	modifier collateralPaid {
+	modifier whenCollateralPaidState {
 		if (state == State.CollateralPaid) {
+			// Throw is not needed here because the function is not payable
 			_;
+		}
+	}
+
+	modifier whenProductFinishedState {
+		if (state == State.ProductFinished) {
+			_;
+		} else {
+			throw;
 		}
 	}
 }

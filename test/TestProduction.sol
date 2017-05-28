@@ -10,7 +10,7 @@ contract TestProduction {
 
   function testInitialVariablesAreSet() {
     // Given
-    Production production = new Production("test", 3);
+    Production production = new Production("test", 4);
 
     // Then
     Assert.isTrue(production.state() == Production.State.RequestSent, "Initial state must be RequestSent");
@@ -18,7 +18,8 @@ contract TestProduction {
     // TODO: get Production's constructor parameters
     // Here, tests are coupled with the contracts deployments from the JS side.
     Assert.isTrue(production.description() == bytes32("test"), "Description is not correct");
-    Assert.isTrue(production.price() == uint(3), "Price is not correct");
+    Assert.isTrue(production.price() == uint(4), "Price is not correct");
+    Assert.isTrue(production.minimumCollateral() == uint(4) / uint(3), "Minimum collateral is not correct");
   }
 
   function testApprovedRequestVariableAreNotSetWhenBuyerIsOrigin() {
