@@ -12,7 +12,7 @@ contract('Production', function(accounts) {
     })
 
     function catchSolidityThrow(error) {
-      if(error.toString().indexOf("invalid opcode") !== -1) {
+      if(error.toString().indexOf("invalid opcode") == -1) {
         assert(false, "We were expecting a Solidity throw (aka an invalid opcode)")
       }
     }
