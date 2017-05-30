@@ -1,14 +1,16 @@
 'use strict'
 
-var fs = require("fs")
+const fs = require("fs")
+const path = require("path")
 
 function readContracts() {
 	var result = {}
-	const path = __dirname+"/build/contracts"
-	var files = fs.readdirSync(path)
-	return files.map((file) => {
-		return fs.readFileSync(path+"/"+file).toString()
+	const dir = path.join(path.join(__dirname, "build"), "contracts")
+	const files = fs.readdirSync(dir)
+	files.forEach((file) => {
+		result[file] = require(path.join(dir, file))
 	})
+	return result
 }
 
 module.exports = readContracts()
