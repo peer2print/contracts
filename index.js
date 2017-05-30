@@ -8,7 +8,7 @@ function readContracts() {
 	const dir = path.join(path.join(__dirname, "build"), "contracts")
 	const files = fs.readdirSync(dir)
 	files.forEach((file) => {
-		result.set(file, require(path.join(dir, file)))
+		result[file] = require(path.join(dir, file))
 	})
 	return result
 }
